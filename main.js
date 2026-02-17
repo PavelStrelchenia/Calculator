@@ -2,7 +2,9 @@
 
 const display = document.querySelector("#display");
 const digit = document.querySelectorAll(".digit");
+const operatorBtn = document.querySelectorAll(".operator");
 const clear = document.querySelector(".clear");
+const result = document.querySelector(".result");
 
 let shouldResetScreen = false;
 
@@ -17,11 +19,43 @@ digit.forEach((button) => {
     });
 });
 
+operatorBtn.forEach((button) => {
+    button.addEventListener("click", () => {
+        if (operator !== undefined && !shouldResetScreen) {
+            secondNumber = Number(display.textContent);
+            const result = operate(operator, firstNumber, secondNumber);
+
+            display.textContent = result;
+            firstNumber = result;
+        } else {
+            firstNumber = Number(display.textContent);
+        }
+
+        operator = button.textContent;
+        shouldResetScreen = true;
+    });
+});
+
 clear.addEventListener("click", () => {
     display.textContent = "0";
     firstNumber = null;
     secondNumber = null;
     operator = undefined;
+});
+
+result.addEventListener("click", () => {
+    if (operator !== undefined && firstNumber !== null) {
+        secondNumber = Number(display.textContent);
+        let calculation = operate(operator, firstNumber, secondNumber);
+
+        if (typeof calculation === "number" && !Number.isInteger(calculation)) {
+            calculation = Math.round(calculation * 1000) / 1000;
+        }
+        display.textContent = calculation;
+        firstNumber = calculation;
+        operator = undefined;
+        shouldResetScreen = true;
+    }
 });
 
 // Addition
