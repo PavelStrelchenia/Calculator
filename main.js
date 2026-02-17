@@ -1,5 +1,29 @@
 "use strict";
 
+const display = document.querySelector("#display");
+const digit = document.querySelectorAll(".digit");
+const clear = document.querySelector(".clear");
+
+let shouldResetScreen = false;
+
+digit.forEach((button) => {
+    button.addEventListener("click", () => {
+        if (display.textContent === "0" || shouldResetScreen) {
+            display.textContent = button.textContent;
+            shouldResetScreen = false;
+        } else {
+            display.textContent += button.textContent;
+        }
+    });
+});
+
+clear.addEventListener("click", () => {
+    display.textContent = "0";
+    firstNumber = null;
+    secondNumber = null;
+    operator = undefined;
+});
+
 // Addition
 
 function sum(a, b) {
